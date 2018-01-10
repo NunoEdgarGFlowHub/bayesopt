@@ -191,7 +191,7 @@ namespace bayesopt
   }
 
   inline vectord MeanModel::muTimesFeat()
-  {  return boost::numeric::ublas::prod(mMu,mFeatM); }
+  { return boost::numeric::ublas::prod(mMu,mFeatM); }
     
   inline double MeanModel::muTimesFeat(const vectord& x)
   { return boost::numeric::ublas::inner_prod(mMu,mMean->getFeatures(x));}

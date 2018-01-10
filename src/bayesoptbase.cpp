@@ -61,12 +61,8 @@ namespace bayesopt
   BayesOptBase::~BayesOptBase()
   { } // Default destructor
 
-
-  // OPTIMIZATION INTERFACE
-  void BayesOptBase::optimize(vectord &bestPoint)
+  void BayesOptBase::restoreOrInitialize()
   {
-    assert(mDims == bestPoint.size());
-    
     // Restore state from file
     if(mParameters.load_save_flag == 1 || mParameters.load_save_flag == 3)
       {
@@ -94,6 +90,14 @@ namespace bayesopt
 	// Initialize a new state
         initializeOptimization();
       }
+  }
+
+  // OPTIMIZATION INTERFACE
+  void BayesOptBase::optimize(vectord &bestPoint)
+  {
+    assert(mDims == bestPoint.size());
+
+    restoreOrInitialize();
     
     for (size_t ii = mCurrentIter; ii < mParameters.n_iterations; ++ii)
       {      
@@ -132,9 +136,17 @@ namespace bayesopt
             mCounterStuck = 0;
           }
       }
-
+    
     mModel->addSample(xNext,yNext);
 
+    if (mUseRobust &&
+        (mCurrentIter >= mParameters.filtering_startup) &&
+        ((mCurrentIter + 1) % mParameters.filtering_interval == 0))
+      {
+        Dataset* pData = mModel->getData();
+        //mRobustModel->setSamples
+      }
+    
     // Update surrogate model
     bool retrain = ((mParameters.n_iter_relearn > 0) && 
 		    ((mCurrentIter + 1) % mParameters.n_iter_relearn == 0));
@@ -167,6 +179,16 @@ namespace bayesopt
   {
     // Posterior surrogate model
     mModel.reset(PosteriorModel::create(mDims,mParameters,mEngine));
+
+    mUseRobust = ((mParameters.filtering_startup >= 0) &&
+                  (mParameters.filtering_interval >= 0));
+
+    if (mUseRobust)
+      {
+        Parameters par2 = mParameters;
+        par2.surr_name = "sStudentTProcessNIG"
+        mRobustModel.reset(PosteriorModel::create(mDims,par2,mEngine));
+      }
     
     // Configure iteration parameters
     if (mParameters.n_init_samples <= 0)
@@ -196,6 +218,10 @@ namespace bayesopt
     
     // Put samples into model
     mModel->setSamples(yPoints);
+    if (mUseRobust)
+      {
+        mRobustModel->setSamples(xPoints, yPoints)
+      }
  
     if(mParameters.verbose_level > 0)
       {

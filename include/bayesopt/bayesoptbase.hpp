@@ -124,7 +124,7 @@ namespace bayesopt {
      * @param bestPoint returns point with the optimum value in a ublas::vector.
      */
     void optimize(vectord &bestPoint);
-
+    
     /** 
      * \brief Execute ONE step the optimization process of the
      * function defined in evaluateSample.  
@@ -143,6 +143,9 @@ namespace bayesopt {
     /** Restores the optimization process of a previous execution */
     void restoreOptimization(BOptState state);
 
+    /** Remove outliers. */
+    void filterStep();
+    
     // Getters and Setters
     ProbabilityDistribution* getPrediction(const vectord& query);
     const Dataset* getData();
@@ -200,8 +203,10 @@ namespace bayesopt {
 
   private:
     boost::scoped_ptr<PosteriorModel> mModel;
+    boost::scoped_ptr<PosteriorModel> mRobustModel;
     double mYPrev;
     size_t mCounterStuck;
+    bool mUseRobust;
   private:
 
     BayesOptBase();
@@ -212,7 +217,9 @@ namespace bayesopt {
      * 
      * @return next point to evaluate
      */
-    vectord nextPoint();  
+    vectord nextPoint();
+
+    void restoreOrInitialize();
 
   };
 

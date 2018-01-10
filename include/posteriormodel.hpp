@@ -80,8 +80,9 @@ namespace bayesopt {
     vectord getPointAtMinimum();
 
     void plotDataset(TLogLevel level);
-
+i
     const Dataset* getData();
+    void setData(const Dataset* data);
     virtual ProbabilityDistribution* getPrediction(const vectord& query) = 0;
 
 

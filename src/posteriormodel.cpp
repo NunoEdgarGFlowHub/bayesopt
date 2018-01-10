@@ -82,5 +82,21 @@ namespace bayesopt
   {  mData.addSample(x,y); mMean.addNewPoint(x);  };
 
 
+  void PosteriorModel::setData(const Dataset *data)
+  {
+    size_t nPoints = data->getNSamples();
+    size_t nDim = data->getSampleX(0).size();
+    
+    matrixd xPoints(nPoints, nDim);
+    vectord yPoints(nPoints,0);
+    for(size_t i=0; i<nPoints; i++)
+      {
+        row(xPoints, i) = data->getSampleX(i);
+        yPoints[i] = data->getSampleY(i);
+      }
+
+    setSamples(xPoints, yPoints);
+  }
+  
 } //namespace bayesopt
 
