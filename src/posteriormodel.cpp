@@ -97,6 +97,14 @@ namespace bayesopt
 
     setSamples(xPoints, yPoints);
   }
-  
+
+  void PosteriorModel::copyData(const Dataset *data)
+  {
+    mData.mX = data->mX;
+    mData.mY = data->mY;
+    mData.updateMinMax();
+    mMean.setPoints(mData.mX);  //Because it expects a vecOfvec instead of a matrixd 
+  }
+
 } //namespace bayesopt
 

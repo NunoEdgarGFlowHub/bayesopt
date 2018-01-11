@@ -139,10 +139,15 @@ namespace bayesopt
     
     mModel->addSample(xNext,yNext);
 
-    if (mUseRobust &&
-        (mCurrentIter >= mParameters.filtering_startup) &&
-        ((mCurrentIter + 1) % mParameters.filtering_interval == 0))
+    bool filterThisIteration =
+      (mUseRobust &&
+       (mCurrentIter >= mParameters.filtering_startup) &&
+       ((mCurrentIter + 1) % mParameters.filtering_interval == 0));
+
+    
+    if (filterThisIteration)
       {
+        //TODO: Add filtering of points and data backup
         Dataset* pData = mModel->getData();
         //mRobustModel->setSamples
       }

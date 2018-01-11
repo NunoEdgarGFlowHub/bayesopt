@@ -83,6 +83,7 @@ namespace bayesopt {
 i
     const Dataset* getData();
     void setData(const Dataset* data);
+    void copyData(const Dataset* data);
     virtual ProbabilityDistribution* getPrediction(const vectord& query) = 0;
 
 
