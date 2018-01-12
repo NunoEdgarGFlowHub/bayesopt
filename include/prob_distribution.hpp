@@ -44,6 +44,7 @@ namespace bayesopt
      * @return probability
      */
     virtual double pdf(double x) = 0;
+    virtual double quantile(double x) = 0;
 
 
     /** 

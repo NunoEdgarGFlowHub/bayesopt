@@ -66,6 +66,12 @@ namespace bayesopt
       return boost::math::pdf(d_,x); 
     };
 
+    double quantile(double p) 
+    {
+      x = boost::math::quantile(d_,p);
+      return (x - mean_) / std_;
+    };
+
     /** 
      * \brief Expected Improvement algorithm for minimization
      * @param min  minimum value found
@@ -100,7 +106,12 @@ namespace bayesopt
     double sample_query();
 
     double getMean() { return mean_; };
-    double getStd()  { return std_; };
+    double getStd()
+    {
+      //TODO: It is undefined for dof_ <= 2
+      if (dof_ > 2) return std_ * sqrt(dof_ / (dof_ - 2));
+      else return std_;
+    };
 
   private:
     boost::math::students_t d_;

@@ -55,6 +55,13 @@ namespace bayesopt
       return boost::math::pdf(d_,x); 
     };
 
+    double quantile(double p) 
+    {
+      x = boost::math::quantile(d_,p);
+      return (x - mean_) / std_;
+    };
+
+
     /** 
      * \brief Expected Improvement algorithm for minimization
      * @param min  minimum value found
