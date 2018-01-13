@@ -80,6 +80,10 @@ cdef extern from "bayesopt/parameters.h":
         char* crit_name
         double* crit_params
         unsigned int n_crit_params
+        int filtering_startup
+        int filtering_interval
+        double up_margin
+        double low_margin
 
     learning_type str2learn(char* name)
     char* learn2str(learning_type name)

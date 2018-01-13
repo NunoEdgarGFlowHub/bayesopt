@@ -80,7 +80,7 @@ namespace bayesopt {
     vectord getPointAtMinimum();
 
     void plotDataset(TLogLevel level);
-i
+
     const Dataset* getData();
     void setData(const Dataset* data);
     void copyData(const Dataset* data);

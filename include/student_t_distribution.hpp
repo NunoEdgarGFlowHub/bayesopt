@@ -62,13 +62,13 @@ namespace bayesopt
      */
     double pdf(double x) 
     {
-      x = (x - mean_) / std_;
-      return boost::math::pdf(d_,x); 
+      double xu = (x - mean_) / std_;
+      return boost::math::pdf(d_,xu); 
     };
 
     double quantile(double p) 
     {
-      x = boost::math::quantile(d_,p);
+      double x = boost::math::quantile(d_,p);
       return (x - mean_) / std_;
     };
 

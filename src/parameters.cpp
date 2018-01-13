@@ -208,6 +208,11 @@ bopt_params initialize_parameters_to_default(void)
   params.kernel = kernel;
   params.mean = mean;
 
+  params.filtering_startup = -1;
+  params.filtering_interval = -1;
+  params.up_margin = 0;
+  params.low_margin = 0;
+
   return params;
 }
 
@@ -293,6 +298,10 @@ namespace bayesopt {
         crit_name = c_params.crit_name;
         crit_params = bayesopt::utils::array2vector(c_params.crit_params, 
 						    c_params.n_crit_params);
+        filtering_startup = c_params.filtering_startup;
+        filtering_interval = c_params.filtering_interval;
+        up_margin = c_params.up_margin;
+        low_margin = c_params.low_margin;
     }
 
     bopt_params Parameters::generate_bopt_params()

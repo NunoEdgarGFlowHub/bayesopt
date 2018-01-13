@@ -87,6 +87,7 @@ SET( BAYESOPT_SRCS
   ./src/bayesoptdisc.cpp
   ./src/bayesoptbase.cpp
   ./src/bopt_state.cpp
+  ./src/robust_filtering.cpp
   ./src/posteriormodel.cpp
   ./src/posterior_fixed.cpp
   ./src/posterior_empirical.cpp

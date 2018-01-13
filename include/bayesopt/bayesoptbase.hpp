@@ -45,6 +45,7 @@ namespace bayesopt {
   class ProbabilityDistribution;
   class Dataset;
   class BOptState;
+  class RobustFiltering;
 
   typedef boost::numeric::ublas::vector<double>                   vectord;
   typedef boost::numeric::ublas::vector<int>                      vectori;
@@ -203,10 +204,11 @@ namespace bayesopt {
 
   private:
     boost::scoped_ptr<PosteriorModel> mModel;
-    boost::scoped_ptr<PosteriorModel> mRobustModel;
+    boost::scoped_ptr<RobustFiltering> mFilter;
     double mYPrev;
     size_t mCounterStuck;
     bool mUseRobust;
+    
   private:
 
     BayesOptBase();

@@ -73,7 +73,7 @@ namespace bayesopt
   inline void Dataset::addSample(const vectord &x, double y)
   {
     mX.push_back(x); utils::append(mY,y);
-    updateMinMax(mY.size()-1);
+    updateMinMax();
   }
 
   inline double Dataset::getSampleY(size_t index) const

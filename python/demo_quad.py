@@ -26,8 +26,7 @@ import numpy as np
 from time import clock
 
 # Python3 compat
-if sys.version_info[0] == 3:
-    raw_input = input
+from six.moves import input
 
 # Function for testing.
 def testfunc(Xin):
@@ -63,7 +62,7 @@ mvalue, x_out, error = bayesopt.optimize(testfunc, n, lb, ub, params)
 
 print("Result", mvalue, "at", x_out)
 print("Running time:", clock() - start, "seconds")
-raw_input('Press INTRO to continue')
+input('Press INTRO to continue')
 
 print("OO implementation")
 bo_test = BayesOptTest(n)
@@ -76,7 +75,7 @@ mvalue, x_out, error = bo_test.optimize()
 
 print("Result", mvalue, "at", x_out)
 print("Running time:", clock() - start, "seconds")
-raw_input('Press INTRO to continue')
+input('Press INTRO to continue')
 
 print("Callback discrete implementation")
 x_set = np.random.rand(100,n)

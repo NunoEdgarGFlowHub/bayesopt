@@ -128,6 +128,11 @@ extern "C" {
     char* crit_name;             /**< Name of the criterion */
     double crit_params[128];     /**< Criterion hyperparameters (if needed) */
     size_t n_crit_params;        /**< Number of criterion hyperparameters */
+
+    int filtering_startup;
+    int filtering_interval;
+    double up_margin;
+    double low_margin;
   } bopt_params;
 						    
   /*-----------------------------------------------------------*/

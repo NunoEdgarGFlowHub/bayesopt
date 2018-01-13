@@ -109,7 +109,13 @@ namespace bayesopt {
 
         std::string crit_name;      /**< Name of the criterion */
         vectord crit_params;        /**< Criterion hyperparameters (if needed) */
-        
+
+        int filtering_startup;
+        int filtering_interval;
+        double up_margin;
+        double low_margin;
+
+      
         /*
          * Class member functions 
          */

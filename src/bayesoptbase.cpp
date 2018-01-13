@@ -28,6 +28,7 @@
 #include "posteriormodel.hpp"
 #include "specialtypes.hpp"
 #include "bopt_state.hpp"
+#include "robust_filtering.hpp"
 
 
 namespace bayesopt
@@ -111,7 +112,7 @@ namespace bayesopt
   void BayesOptBase::stepOptimization()
   {
     // Find what is the next point.
-    vectord xNext = nextPoint(); 
+    vectord xNext = nextPoint();
     double yNext = evaluateSampleInternal(xNext);
 
     // If we are stuck in the same point for several iterations, try a random jump!
@@ -139,17 +140,19 @@ namespace bayesopt
     
     mModel->addSample(xNext,yNext);
 
-    bool filterThisIteration =
-      (mUseRobust &&
-       (mCurrentIter >= mParameters.filtering_startup) &&
-       ((mCurrentIter + 1) % mParameters.filtering_interval == 0));
-
-    
-    if (filterThisIteration)
+    if (mUseRobust)
       {
-        //TODO: Add filtering of points and data backup
-        Dataset* pData = mModel->getData();
-        //mRobustModel->setSamples
+        mFilter->addSample(xNext,yNext);
+        bool filterThisIteration =
+          ((mCurrentIter >= mParameters.filtering_startup) &&
+           ((mCurrentIter + 1) % mParameters.filtering_interval == 0));
+
+        if (filterThisIteration)
+          {
+            //TODO: Check that the copy is safe.
+            mModel->copyData(mFilter->filterPoints());
+          }
+        
       }
     
     // Update surrogate model
@@ -190,9 +193,7 @@ namespace bayesopt
 
     if (mUseRobust)
       {
-        Parameters par2 = mParameters;
-        par2.surr_name = "sStudentTProcessNIG"
-        mRobustModel.reset(PosteriorModel::create(mDims,par2,mEngine));
+        mFilter.reset(new RobustFiltering(mDims, mParameters, mEngine));
       }
     
     // Configure iteration parameters
@@ -225,7 +226,7 @@ namespace bayesopt
     mModel->setSamples(yPoints);
     if (mUseRobust)
       {
-        mRobustModel->setSamples(xPoints, yPoints)
+        mFilter->setSamples(xPoints, yPoints);
       }
  
     if(mParameters.verbose_level > 0)
