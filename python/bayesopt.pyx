@@ -199,6 +199,11 @@ cdef bopt_params dict2structparams(dict dparams):
         for i in range(0,params.n_crit_params):
             params.crit_params[i] = cp[i]
 
+    params.filtering_startup = dparams.get('filtering_startup',params.filtering_startup)
+    params.filtering_interval = dparams.get('filtering_interval',params.filtering_interval)
+    params.up_margin = dparams.get('up_margin',params.up_margin)
+    params.low_margin = dparams.get('low_margin',params.low_margin)
+
     return params
 
 cdef double callback(unsigned int n, const_double_ptr x,
