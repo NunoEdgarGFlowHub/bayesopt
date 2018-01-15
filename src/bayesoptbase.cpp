@@ -57,6 +57,10 @@ namespace bayesopt
       default:
 	FILELog::ReportingLevel() = logERROR; break;
       }
+
+    mUseRobust = ((mParameters.filtering_startup >= 0) &&
+                  (mParameters.filtering_interval >= 0));
+
   }
 
   BayesOptBase::~BayesOptBase()
@@ -143,6 +147,7 @@ namespace bayesopt
     if (mUseRobust)
       {
         mFilter->addSample(xNext,yNext);
+
         bool filterThisIteration =
           ((mCurrentIter >= mParameters.filtering_startup) &&
            ((mCurrentIter + 1) % mParameters.filtering_interval == 0));
@@ -187,9 +192,6 @@ namespace bayesopt
   {
     // Posterior surrogate model
     mModel.reset(PosteriorModel::create(mDims,mParameters,mEngine));
-
-    mUseRobust = ((mParameters.filtering_startup >= 0) &&
-                  (mParameters.filtering_interval >= 0));
 
     if (mUseRobust)
       {
