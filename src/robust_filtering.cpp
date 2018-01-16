@@ -37,11 +37,14 @@ namespace bayesopt
   
   const Dataset* RobustFiltering::filterPoints()
   {
-    mFilteredData.reset();
+    mFilteredData.reset(new Dataset());
     vecOfvec XX = mRobustModel->getData()->mX;
     vectord YY = mRobustModel->getData()->mY;
 
     size_t n_points = mRobustModel->getData()->getNSamples();
+
+    mRobustModel->updateHyperParameters();
+    mRobustModel->fitSurrogateModel();
 
     for(size_t i = 0; i < n_points; ++i)
       {
@@ -54,6 +57,12 @@ namespace bayesopt
             utils::append(mFilteredData->mY, YY[i]);
           }
       }
+    if (mFilteredData->getNSamples() <= n_points * 0.5)
+      {
+        mFilteredData->mX = XX;
+        mFilteredData->mY = YY;
+      }
+    
     return mFilteredData.get();
   }
   

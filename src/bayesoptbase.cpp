@@ -144,6 +144,10 @@ namespace bayesopt
     
     mModel->addSample(xNext,yNext);
 
+    // Update surrogate model
+    bool retrain = ((mParameters.n_iter_relearn > 0) && 
+		    ((mCurrentIter + 1) % mParameters.n_iter_relearn == 0));
+
     if (mUseRobust)
       {
         mFilter->addSample(xNext,yNext);
@@ -156,13 +160,11 @@ namespace bayesopt
           {
             //TODO: Check that the copy is safe.
             mModel->copyData(mFilter->filterPoints());
+            retrain = true;
           }
         
       }
     
-    // Update surrogate model
-    bool retrain = ((mParameters.n_iter_relearn > 0) && 
-		    ((mCurrentIter + 1) % mParameters.n_iter_relearn == 0));
 
     if (retrain)  // Full update
       {
