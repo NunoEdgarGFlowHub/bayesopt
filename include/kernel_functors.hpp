@@ -55,6 +55,9 @@ namespace bayesopt
     virtual double gradient( const vectord &x1, const vectord &x2,
 			     size_t component ) = 0;
 
+    // Only kernels with noise modify them.
+    virtual double getNoise(){ return 0.0; };
+
   protected:
     size_t n_inputs;
   };

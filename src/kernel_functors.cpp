@@ -45,6 +45,7 @@ namespace bayesopt
   KernelFactory::KernelFactory()
   {
     registry["kConst"] = & create_func<ConstKernel>;
+    registry["kNoise"] = & create_func<NoiseKernel>;
     registry["kLinear"] = & create_func<LinKernel>;
     registry["kLinearARD"] = & create_func<LinKernelARD>;
 
@@ -169,7 +170,7 @@ namespace bayesopt
 	    corrMatrix(ii,jj) = (*mKernel)(XX[ii], XX[jj]);
 	    corrMatrix(jj,ii) = corrMatrix(ii,jj);
 	  }
-	corrMatrix(ii,ii) = (*mKernel)(XX[ii],XX[ii]) + nugget;
+        corrMatrix(ii,ii) = (*mKernel)(XX[ii],XX[ii]) + nugget + mKernel->getNoise();
       }
   }
 

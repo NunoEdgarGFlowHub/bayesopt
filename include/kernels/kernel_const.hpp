@@ -50,6 +50,24 @@ namespace bayesopt
     { return 0.0; };
   };
 
+  class NoiseKernel: public AtomicKernel
+  {
+  public:
+    void init(size_t input_dim)
+    { n_params = 1; n_inputs = input_dim;   };
+
+    double operator()(const vectord &x1, const vectord &x2)
+    { return 0.0; };
+
+    double gradient(const vectord &x1, const vectord &x2,
+		    size_t component)
+    { return 0.0; };
+
+    double getNoise()
+    { return params(0); }
+  };
+
+
   //@}
 
 } //namespace bayesopt

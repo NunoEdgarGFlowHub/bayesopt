@@ -53,7 +53,7 @@ namespace bayesopt
   {
     const vectord lastX = mData.getLastSampleX();
     vectord newK = computeCrossCorrelation(lastX);
-    newK(newK.size()-1) += mRegularizer;   // We add it to the last element
+    newK(newK.size()-1) += mRegularizer + mKernel.getKernel()->getNoise();   // We add it to the last element
     utils::cholesky_add_row(mL,newK);
     precomputePrediction(); 
   } // updateSurrogateModel
