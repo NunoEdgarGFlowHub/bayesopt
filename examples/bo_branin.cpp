@@ -38,6 +38,12 @@ int main(int nargs, char *args[])
     par.random_seed = 0;
     par.verbose_level = 1;
     par.noise = 1e-10;
+    par.filtering_startup = 10;
+    par.filtering_interval = 2;
+    par.up_margin = 5;
+    par.low_margin = 1e-20;
+    par.kernel.name = "kSum(kNoise,kMaternARD5)";
+
     //bayesopt::utils::ParamLoader::save("bo_branin.txt", par);
   }
   

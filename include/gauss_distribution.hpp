@@ -58,7 +58,7 @@ namespace bayesopt
     double quantile(double p) 
     {
       double x = boost::math::quantile(d_,p);
-      return (x - mean_) / std_;
+      return x * std_ + mean_;
     };
 
 

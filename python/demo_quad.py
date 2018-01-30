@@ -50,6 +50,10 @@ params = {}
 params['n_iterations'] = 50
 params['n_iter_relearn'] = 5
 params['n_init_samples'] = 2
+params['filtering_startup'] = 10
+params['filtering_interval'] = 2
+params['up_margin'] = 5
+params['low_margin'] = 1e-10
 
 print("Callback implementation")
 

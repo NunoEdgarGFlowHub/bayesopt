@@ -30,6 +30,7 @@ namespace bayesopt
     up_margin = (100.0 - parameters.up_margin) / 100.0;
     low_margin = parameters.low_margin / 100.0;
     par2.surr_name = "sStudentTProcessNIG";
+    par2.noise = 1e-3;
     mRobustModel.reset(PosteriorModel::create(dim,par2,eng));
   }
 
@@ -55,12 +56,18 @@ namespace bayesopt
           {
             mFilteredData->mX.push_back(XX[i]);
             utils::append(mFilteredData->mY, YY[i]);
+            FILE_LOG(logINFO) << "Keeped value:" << YY[i] << " with thresholds:" << f_low << ", " << f_up << " and mean:" << pd->getMean();
+          }
+        else
+          {
+            FILE_LOG(logINFO) << "REMOVED value:" << YY[i] << " with thresholds:" << f_low << ", " << f_up;
           }
       }
     if (mFilteredData->getNSamples() <= n_points * 0.5)
       {
         mFilteredData->mX = XX;
         mFilteredData->mY = YY;
+        FILE_LOG(logINFO) << "TOO MANY POINTS REMOVED.";
       }
     
     return mFilteredData.get();

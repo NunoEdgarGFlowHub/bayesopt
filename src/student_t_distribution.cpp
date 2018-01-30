@@ -33,7 +33,7 @@ namespace bayesopt
   double StudentTDistribution::negativeProbabilityOfImprovement(double min,
 								double epsilon)
   {  
-    return -cdf(d_,(min - mean_ + epsilon)/std_);
+    return -boost::math::cdf(d_,(min - mean_ + epsilon)/std_);
   }  // negativeProbabilityOfImprovement
 
 

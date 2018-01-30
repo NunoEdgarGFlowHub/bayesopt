@@ -29,6 +29,7 @@
 // for student t distribution
 #include <boost/math/distributions/students_t.hpp> 
 #include "prob_distribution.hpp"
+#include "log.hpp"
 
 namespace bayesopt
 {
@@ -69,7 +70,7 @@ namespace bayesopt
     double quantile(double p) 
     {
       double x = boost::math::quantile(d_,p);
-      return (x - mean_) / std_;
+      return x * std_ + mean_;
     };
 
     /** 
